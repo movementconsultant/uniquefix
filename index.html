@@ -61,6 +61,17 @@
             outline: 2px solid #ea580c;
             outline-offset: 2px;
         }
+        .step-content {
+            display: none;
+        }
+        .step-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body class="bg-warmwhite text-charcoal-900 font-sans antialiased flex flex-col min-h-screen">
@@ -432,15 +443,27 @@
                         </div>
                     </div>
 
-                    <!-- FormSubmit Form -->
+                    <!-- Multi-Step FormSubmit Form -->
                     <div class="lg:col-span-3 bg-white p-8 rounded-xl shadow-sm border border-gray-200">
                         <h3 class="text-2xl font-bold text-charcoal-900 mb-6">Request an Estimate</h3>
                         
+                        <!-- Progress Bar -->
+                        <div class="mb-8">
+                            <div class="flex justify-between mb-2 text-sm font-medium text-gray-600">
+                                <span id="step-label-1" class="text-safetyorange-600 font-bold">1. Contact Info</span>
+                                <span id="step-label-2">2. Project Details</span>
+                                <span id="step-label-3">3. Description & Submit</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div id="progress-bar" class="bg-safetyorange-600 h-2.5 rounded-full transition-all duration-300" style="width: 33%"></div>
+                            </div>
+                        </div>
+                        
                         <form
+                            id="estimateForm"
                             action="https://formsubmit.co/BruceOsbey6@gmail.com"
                             method="POST"
                             enctype="multipart/form-data"
-                            class="space-y-6"
                         >
                             <!-- FormSubmit Configuration -->
                             <input type="hidden" name="_subject" value="New Estimate Request - Unique Fix">
@@ -451,91 +474,120 @@
                             <!-- FormSubmit Honeypot -->
                             <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
 
-                            <div class="grid md:grid-cols-2 gap-6">
-                                <div>
-                                    <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">Full Name <span class="text-red-600">*</span></label>
-                                    <input type="text" id="fullName" name="Full Name" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring">
+                            <!-- STEP 1: Contact Information -->
+                            <div id="step-1" class="step-content active space-y-6">
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">Full Name <span class="text-red-600">*</span></label>
+                                        <input type="text" id="fullName" name="Full Name" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring">
+                                    </div>
+                                    <div>
+                                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email <span class="text-red-600">*</span></label>
+                                        <input type="email" id="email" name="Email" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring">
+                                    </div>
                                 </div>
-                                <div>
-                                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email <span class="text-red-600">*</span></label>
-                                    <input type="email" id="email" name="Email" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring">
+
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number <span id="phoneRequiredStar" class="text-red-600 hidden">*</span></label>
+                                        <input type="tel" id="phone" name="Phone" class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring">
+                                    </div>
+                                    <div>
+                                        <label for="preferredContact" class="block text-sm font-medium text-gray-700 mb-1">Preferred Contact Method <span class="text-red-600">*</span></label>
+                                        <select id="preferredContact" name="Preferred Contact" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring bg-white">
+                                            <option value="">Select...</option>
+                                            <option value="Email">Email</option>
+                                            <option value="Phone">Phone</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-end pt-4">
+                                    <button type="button" onclick="nextStep(1)" class="bg-safetyorange-600 hover:bg-safetyorange-700 text-white font-semibold py-3 px-8 rounded shadow transition-colors focus-visible-ring flex items-center gap-2">
+                                        Next Step <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                    </button>
                                 </div>
                             </div>
 
-                            <div class="grid md:grid-cols-2 gap-6">
-                                <div>
-                                    <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number <span id="phoneRequiredStar" class="text-red-600 hidden">*</span></label>
-                                    <input type="tel" id="phone" name="Phone" class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring">
+                            <!-- STEP 2: Project Details -->
+                            <div id="step-2" class="step-content space-y-6">
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="projectType" class="block text-sm font-medium text-gray-700 mb-1">Project Type <span class="text-red-600">*</span></label>
+                                        <select id="projectType" name="Project Type" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring bg-white">
+                                            <option value="">Select...</option>
+                                            <option value="Residential">Residential</option>
+                                            <option value="Commercial">Commercial</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="serviceCategory" class="block text-sm font-medium text-gray-700 mb-1">Service Category <span class="text-red-600">*</span></label>
+                                        <select id="serviceCategory" name="Service Category" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring bg-white">
+                                            <option value="">Select...</option>
+                                            <option value="Contracting Services">Contracting Services</option>
+                                            <option value="Handyman Services">Handyman Services</option>
+                                            <option value="Commercial Oven & Exhaust Cleaning">Commercial Oven & Exhaust Cleaning</option>
+                                            <option value="Other / Not Sure">Other / Not Sure</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div>
-                                    <label for="preferredContact" class="block text-sm font-medium text-gray-700 mb-1">Preferred Contact Method <span class="text-red-600">*</span></label>
-                                    <select id="preferredContact" name="Preferred Contact" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring bg-white">
-                                        <option value="">Select...</option>
-                                        <option value="Email">Email</option>
-                                        <option value="Phone">Phone</option>
-                                    </select>
-                                </div>
-                            </div>
 
-                            <div class="grid md:grid-cols-2 gap-6">
-                                <div>
-                                    <label for="projectType" class="block text-sm font-medium text-gray-700 mb-1">Project Type <span class="text-red-600">*</span></label>
-                                    <select id="projectType" name="Project Type" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring bg-white">
-                                        <option value="">Select...</option>
-                                        <option value="Residential">Residential</option>
-                                        <option value="Commercial">Commercial</option>
-                                    </select>
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Project City or ZIP Code <span class="text-red-600">*</span></label>
+                                        <input type="text" id="location" name="Location" required placeholder="e.g., 60614 or Evanston" class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring">
+                                    </div>
+                                    <div>
+                                        <label for="timing" class="block text-sm font-medium text-gray-700 mb-1">Desired Timing</label>
+                                        <select id="timing" name="Timing" class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring bg-white">
+                                            <option value="">Select...</option>
+                                            <option value="As soon as possible">As soon as possible</option>
+                                            <option value="Within 1-2 weeks">Within 1-2 weeks</option>
+                                            <option value="Within a month">Within a month</option>
+                                            <option value="Flexible / Planning ahead">Flexible / Planning ahead</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div>
-                                    <label for="serviceCategory" class="block text-sm font-medium text-gray-700 mb-1">Service Category <span class="text-red-600">*</span></label>
-                                    <select id="serviceCategory" name="Service Category" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring bg-white">
-                                        <option value="">Select...</option>
-                                        <option value="Contracting Services">Contracting Services</option>
-                                        <option value="Handyman Services">Handyman Services</option>
-                                        <option value="Commercial Oven & Exhaust Cleaning">Commercial Oven & Exhaust Cleaning</option>
-                                        <option value="Other / Not Sure">Other / Not Sure</option>
-                                    </select>
-                                </div>
-                            </div>
 
-                            <div class="grid md:grid-cols-2 gap-6">
-                                <div>
-                                    <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Project City or ZIP Code <span class="text-red-600">*</span></label>
-                                    <input type="text" id="location" name="Location" required placeholder="e.g., 60614 or Evanston" class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring">
-                                </div>
-                                <div>
-                                    <label for="timing" class="block text-sm font-medium text-gray-700 mb-1">Desired Timing</label>
-                                    <select id="timing" name="Timing" class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring bg-white">
-                                        <option value="">Select...</option>
-                                        <option value="As soon as possible">As soon as possible</option>
-                                        <option value="Within 1-2 weeks">Within 1-2 weeks</option>
-                                        <option value="Within a month">Within a month</option>
-                                        <option value="Flexible / Planning ahead">Flexible / Planning ahead</option>
-                                    </select>
+                                <div class="flex justify-between pt-4">
+                                    <button type="button" onclick="prevStep(2)" class="bg-gray-200 hover:bg-gray-300 text-charcoal-900 font-semibold py-3 px-8 rounded shadow transition-colors focus-visible-ring flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> Back
+                                    </button>
+                                    <button type="button" onclick="nextStep(2)" class="bg-safetyorange-600 hover:bg-safetyorange-700 text-white font-semibold py-3 px-8 rounded shadow transition-colors focus-visible-ring flex items-center gap-2">
+                                        Next Step <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                    </button>
                                 </div>
                             </div>
 
-                            <div>
-                                <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Project Description <span class="text-red-600">*</span></label>
-                                <textarea id="description" name="Project Description" rows="4" required placeholder="Please describe your project, including any specific equipment or needs." class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring"></textarea>
-                            </div>
+                            <!-- STEP 3: Description & Submit -->
+                            <div id="step-3" class="step-content space-y-6">
+                                <div>
+                                    <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Project Description <span class="text-red-600">*</span></label>
+                                    <textarea id="description" name="Project Description" rows="4" required placeholder="Please describe your project, including any specific equipment or needs." class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring"></textarea>
+                                </div>
 
-                            <div>
-                                <label for="attachment" class="block text-sm font-medium text-gray-700 mb-1">Attach Photos (Optional)</label>
-                                <input type="file" id="attachment" name="attachment" multiple accept="image/jpeg,image/png,image/webp,application/pdf" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-charcoal-900 file:text-white hover:file:bg-charcoal-800 focus-visible-ring">
-                                <p class="text-xs text-gray-500 mt-1">Accepted: JPG, PNG, WEBP, PDF. Maximum combined attachment size: 10 MB.</p>
-                            </div>
+                                <div>
+                                    <label for="attachment" class="block text-sm font-medium text-gray-700 mb-1">Attach Photos (Optional)</label>
+                                    <input type="file" id="attachment" name="attachment" multiple accept="image/jpeg,image/png,image/webp,application/pdf" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-charcoal-900 file:text-white hover:file:bg-charcoal-800 focus-visible-ring">
+                                    <p class="text-xs text-gray-500 mt-1">Accepted: JPG, PNG, WEBP, PDF. Maximum combined attachment size: 10 MB.</p>
+                                </div>
 
-                            <div class="bg-orange-50 border border-orange-200 rounded p-4">
-                                <p class="text-sm text-orange-800">
-                                    <span class="font-semibold">Notice:</span> Submitting a request does not confirm pricing or reserve an appointment. Project scope, service availability, and scheduling will be discussed with Bruce. Submitted information will be used solely to respond to your inquiry.
-                                </p>
-                            </div>
+                                <div class="bg-orange-50 border border-orange-200 rounded p-4">
+                                    <p class="text-sm text-orange-800">
+                                        <span class="font-semibold">Notice:</span> Submitting a request does not confirm pricing or reserve an appointment. Project scope, service availability, and scheduling will be discussed with Bruce. Submitted information will be used solely to respond to your inquiry.
+                                    </p>
+                                </div>
 
-                            <button type="submit" class="w-full bg-safetyorange-600 hover:bg-safetyorange-700 text-white font-bold py-4 px-6 rounded shadow transition-colors focus-visible-ring flex items-center justify-center gap-2">
-                                <span>Submit Estimate Request</span>
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                            </button>
+                                <div class="flex justify-between pt-4">
+                                    <button type="button" onclick="prevStep(3)" class="bg-gray-200 hover:bg-gray-300 text-charcoal-900 font-semibold py-3 px-8 rounded shadow transition-colors focus-visible-ring flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> Back
+                                    </button>
+                                    <button type="submit" class="bg-safetyorange-600 hover:bg-safetyorange-700 text-white font-bold py-3 px-8 rounded shadow transition-colors focus-visible-ring flex items-center gap-2">
+                                        <span>Submit Estimate Request</span>
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                    </button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -637,6 +689,79 @@
                 phoneRequiredStar.classList.add('hidden');
             }
         });
+
+        // Multi-step form logic
+        let currentStep = 1;
+        const totalSteps = 3;
+
+        function updateProgressBar() {
+            const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+            
+            for (let i = 1; i <= totalSteps; i++) {
+                const label = document.getElementById(`step-label-${i}`);
+                if (i === currentStep) {
+                    label.classList.add('text-safetyorange-600', 'font-bold');
+                    label.classList.remove('text-gray-600');
+                } else if (i < currentStep) {
+                    label.classList.add('text-safetyorange-600');
+                    label.classList.remove('text-gray-600', 'font-bold');
+                    label.innerHTML = `✓ ${label.innerText.replace('✓ ', '')}`;
+                } else {
+                    label.classList.remove('text-safetyorange-600', 'font-bold');
+                    label.classList.add('text-gray-600');
+                }
+            }
+        }
+
+        function showStep(step) {
+            document.querySelectorAll('.step-content').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.getElementById(`step-${step}`).classList.add('active');
+            updateProgressBar();
+            
+            // Scroll to top of form on mobile
+            if (window.innerWidth < 768) {
+                document.getElementById('estimateForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function validateStep(step) {
+            const stepElement = document.getElementById(`step-${step}`);
+            const inputs = stepElement.querySelectorAll('input, select, textarea');
+            let isValid = true;
+
+            inputs.forEach(input => {
+                if (input.hasAttribute('required') && !input.value.trim()) {
+                    isValid = false;
+                    input.reportValidity();
+                } else if (input.type === 'email' && input.value.trim()) {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(input.value.trim())) {
+                        isValid = false;
+                        input.reportValidity();
+                    }
+                }
+            });
+
+            return isValid;
+        }
+
+        function nextStep(step) {
+            if (validateStep(step)) {
+                currentStep = step + 1;
+                showStep(currentStep);
+            }
+        }
+
+        function prevStep(step) {
+            currentStep = step - 1;
+            showStep(currentStep);
+        }
+
+        // Initialize progress bar
+        updateProgressBar();
     </script>
 </body>
 </html>
