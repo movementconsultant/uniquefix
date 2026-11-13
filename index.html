@@ -61,35 +61,7 @@
             outline: 2px solid #ea580c;
             outline-offset: 2px;
         }
-        /* Hide number input arrows */
-        input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { 
-            -webkit-appearance: none; 
-            margin: 0; 
-        }
     </style>
-
-    <!-- Centralized Business Configuration -->
-    <script>
-        const BUSINESS_CONFIG = {
-            name: "Unique Fix",
-            owner: "Bruce Osbey",
-            title: "Owner & Main Contractor",
-            phoneDisplay: "224-621-1669",
-            phoneLink: "tel:+12246211669",
-            email: "BruceOsbey@gmail.com",
-            emailLink: "mailto:BruceOsbey@gmail.com",
-            domain: "https://uniquefixcontracting.com",
-            serviceArea: "Chicagoland Area",
-            hours: "8:00 AM–6:00 PM",
-            credentials: [
-                "OSHA 10 Safety Training",
-                "OSHA 30 Safety Training",
-                "NCCER Certification (Pending Verification)",
-                "IKECA Certification related to commercial oven and exhaust cleaning (Pending Verification)"
-            ]
-        };
-    </script>
 </head>
 <body class="bg-warmwhite text-charcoal-900 font-sans antialiased flex flex-col min-h-screen">
 
@@ -460,40 +432,47 @@
                         </div>
                     </div>
 
-                    <!-- Form -->
+                    <!-- FormSubmit Form -->
                     <div class="lg:col-span-3 bg-white p-8 rounded-xl shadow-sm border border-gray-200">
                         <h3 class="text-2xl font-bold text-charcoal-900 mb-6">Request an Estimate</h3>
                         
-                        <!-- 
-                          TODO: FORM BACKEND CONFIGURATION
-                          Replace the action URL with a configured form endpoint (e.g., Formspree, Netlify Forms, or a custom Node/PHP backend).
-                          Ensure the backend is configured to forward submissions to: BruceOsbey@gmail.com
-                          Do not spoof the sender address. Use environment variables for API keys.
-                        -->
-                        <form id="estimateForm" action="https://formspree.io/f/your-form-id" method="POST" enctype="multipart/form-data" class="space-y-6" novalidate>
+                        <form
+                            action="https://formsubmit.co/BruceOsbey@gmail.com"
+                            method="POST"
+                            enctype="multipart/form-data"
+                            class="space-y-6"
+                        >
+                            <!-- FormSubmit Configuration -->
+                            <input type="hidden" name="_subject" value="New Estimate Request - Unique Fix">
+                            <input type="hidden" name="_template" value="table">
+                            <input type="hidden" name="_captcha" value="true">
+                            <input type="hidden" name="_next" value="https://uniquefixcontracting.com/#contact">
                             
+                            <!-- FormSubmit Honeypot -->
+                            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+
                             <div class="grid md:grid-cols-2 gap-6">
                                 <div>
                                     <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">Full Name <span class="text-red-600">*</span></label>
-                                    <input type="text" id="fullName" name="fullName" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring">
+                                    <input type="text" id="fullName" name="Full Name" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring">
                                 </div>
                                 <div>
                                     <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email <span class="text-red-600">*</span></label>
-                                    <input type="email" id="email" name="email" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring">
+                                    <input type="email" id="email" name="Email" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring">
                                 </div>
                             </div>
 
                             <div class="grid md:grid-cols-2 gap-6">
                                 <div>
-                                    <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-                                    <input type="tel" id="phone" name="phone" class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring">
+                                    <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number <span id="phoneRequiredStar" class="text-red-600 hidden">*</span></label>
+                                    <input type="tel" id="phone" name="Phone" class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring">
                                 </div>
                                 <div>
                                     <label for="preferredContact" class="block text-sm font-medium text-gray-700 mb-1">Preferred Contact Method <span class="text-red-600">*</span></label>
-                                    <select id="preferredContact" name="preferredContact" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring bg-white">
+                                    <select id="preferredContact" name="Preferred Contact" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring bg-white">
                                         <option value="">Select...</option>
-                                        <option value="email">Email</option>
-                                        <option value="phone">Phone</option>
+                                        <option value="Email">Email</option>
+                                        <option value="Phone">Phone</option>
                                     </select>
                                 </div>
                             </div>
@@ -501,20 +480,20 @@
                             <div class="grid md:grid-cols-2 gap-6">
                                 <div>
                                     <label for="projectType" class="block text-sm font-medium text-gray-700 mb-1">Project Type <span class="text-red-600">*</span></label>
-                                    <select id="projectType" name="projectType" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring bg-white">
+                                    <select id="projectType" name="Project Type" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring bg-white">
                                         <option value="">Select...</option>
-                                        <option value="residential">Residential</option>
-                                        <option value="commercial">Commercial</option>
+                                        <option value="Residential">Residential</option>
+                                        <option value="Commercial">Commercial</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label for="serviceCategory" class="block text-sm font-medium text-gray-700 mb-1">Service Category <span class="text-red-600">*</span></label>
-                                    <select id="serviceCategory" name="serviceCategory" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring bg-white">
+                                    <select id="serviceCategory" name="Service Category" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring bg-white">
                                         <option value="">Select...</option>
-                                        <option value="contracting">Contracting Services</option>
-                                        <option value="handyman">Handyman Services</option>
-                                        <option value="oven-exhaust">Commercial Oven & Exhaust Cleaning</option>
-                                        <option value="other">Other / Not Sure</option>
+                                        <option value="Contracting Services">Contracting Services</option>
+                                        <option value="Handyman Services">Handyman Services</option>
+                                        <option value="Commercial Oven & Exhaust Cleaning">Commercial Oven & Exhaust Cleaning</option>
+                                        <option value="Other / Not Sure">Other / Not Sure</option>
                                     </select>
                                 </div>
                             </div>
@@ -522,35 +501,29 @@
                             <div class="grid md:grid-cols-2 gap-6">
                                 <div>
                                     <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Project City or ZIP Code <span class="text-red-600">*</span></label>
-                                    <input type="text" id="location" name="location" required placeholder="e.g., 60614 or Evanston" class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring">
+                                    <input type="text" id="location" name="Location" required placeholder="e.g., 60614 or Evanston" class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring">
                                 </div>
                                 <div>
                                     <label for="timing" class="block text-sm font-medium text-gray-700 mb-1">Desired Timing</label>
-                                    <select id="timing" name="timing" class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring bg-white">
+                                    <select id="timing" name="Timing" class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring bg-white">
                                         <option value="">Select...</option>
-                                        <option value="asap">As soon as possible</option>
-                                        <option value="1-2-weeks">Within 1-2 weeks</option>
-                                        <option value="1-month">Within a month</option>
-                                        <option value="flexible">Flexible / Planning ahead</option>
+                                        <option value="As soon as possible">As soon as possible</option>
+                                        <option value="Within 1-2 weeks">Within 1-2 weeks</option>
+                                        <option value="Within a month">Within a month</option>
+                                        <option value="Flexible / Planning ahead">Flexible / Planning ahead</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div>
                                 <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Project Description <span class="text-red-600">*</span></label>
-                                <textarea id="description" name="description" rows="4" required placeholder="Please describe your project, including any specific equipment or needs." class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring"></textarea>
+                                <textarea id="description" name="Project Description" rows="4" required placeholder="Please describe your project, including any specific equipment or needs." class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-safetyorange-600 focus:border-safetyorange-600 focus-visible-ring"></textarea>
                             </div>
 
                             <div>
-                                <label for="photos" class="block text-sm font-medium text-gray-700 mb-1">Upload Photos (Optional)</label>
-                                <input type="file" id="photos" name="photos" multiple accept="image/jpeg,image/png,image/webp" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-charcoal-900 file:text-white hover:file:bg-charcoal-800 focus-visible-ring">
-                                <p class="text-xs text-gray-500 mt-1">Accepted: JPG, PNG, WEBP. Max 5MB per file.</p>
-                            </div>
-
-                            <!-- Spam Protection Honeypot -->
-                            <div class="hidden" aria-hidden="true">
-                                <label for="website">Do not fill this out if you are human</label>
-                                <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                                <label for="attachment" class="block text-sm font-medium text-gray-700 mb-1">Attach Photos (Optional)</label>
+                                <input type="file" id="attachment" name="attachment" multiple accept="image/jpeg,image/png,image/webp,application/pdf" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-charcoal-900 file:text-white hover:file:bg-charcoal-800 focus-visible-ring">
+                                <p class="text-xs text-gray-500 mt-1">Accepted: JPG, PNG, WEBP, PDF. Maximum combined attachment size: 10 MB.</p>
                             </div>
 
                             <div class="bg-orange-50 border border-orange-200 rounded p-4">
@@ -559,12 +532,10 @@
                                 </p>
                             </div>
 
-                            <button type="submit" id="submitBtn" class="w-full bg-safetyorange-600 hover:bg-safetyorange-700 text-white font-bold py-4 px-6 rounded shadow transition-colors focus-visible-ring flex items-center justify-center gap-2">
+                            <button type="submit" class="w-full bg-safetyorange-600 hover:bg-safetyorange-700 text-white font-bold py-4 px-6 rounded shadow transition-colors focus-visible-ring flex items-center justify-center gap-2">
                                 <span>Submit Estimate Request</span>
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                             </button>
-                            
-                            <div id="formStatus" class="hidden text-center p-4 rounded"></div>
                         </form>
                     </div>
                 </div>
@@ -652,57 +623,19 @@
             });
         });
 
-        // Form Validation and Handling
-        const form = document.getElementById('estimateForm');
-        const submitBtn = document.getElementById('submitBtn');
-        const formStatus = document.getElementById('formStatus');
+        // Dynamic validation: If phone is preferred, require phone number
         const preferredContact = document.getElementById('preferredContact');
         const phoneInput = document.getElementById('phone');
+        const phoneRequiredStar = document.getElementById('phoneRequiredStar');
 
-        // Dynamic validation: If phone is preferred, require phone number
         preferredContact.addEventListener('change', () => {
-            if (preferredContact.value === 'phone') {
+            if (preferredContact.value === 'Phone') {
                 phoneInput.setAttribute('required', 'required');
+                phoneRequiredStar.classList.remove('hidden');
             } else {
                 phoneInput.removeAttribute('required');
+                phoneRequiredStar.classList.add('hidden');
             }
-        });
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            // Check honeypot
-            if (document.getElementById('website').value !== '') {
-                return; // Silent fail for spam
-            }
-
-            // Basic validation check
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-
-            // Simulate submission state (Replace with actual fetch/submit logic when backend is configured)
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Sending...';
-            
-            // NOTE: In production, replace this setTimeout with actual fetch() to your form endpoint
-            // Example:
-            // const formData = new FormData(form);
-            // const response = await fetch(form.action, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } });
-            
-            setTimeout(() => {
-                // Simulated success state
-                form.reset();
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<span>Submit Estimate Request</span><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>';
-                
-                formStatus.className = 'block text-center p-4 rounded bg-green-50 text-green-800 border border-green-200';
-                formStatus.innerHTML = '<p class="font-semibold">Request Received</p><p class="text-sm mt-1">Thank you. Bruce will review your project details and contact you shortly to discuss scope and availability.</p>';
-                
-                // Scroll to status
-                formStatus.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 1500);
         });
     </script>
 </body>
